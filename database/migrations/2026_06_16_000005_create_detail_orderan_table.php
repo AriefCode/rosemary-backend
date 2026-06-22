@@ -11,8 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('orderan_id')->constrained('orderan')->cascadeOnDelete();
             $table->foreignId('sayur_id')->constrained('sayur')->cascadeOnDelete();
-            $table->unsignedInteger('jumlah');
-            $table->string('satuan');
+            $table->decimal('jumlah', 10, 2);
             $table->timestamps();
         });
     }

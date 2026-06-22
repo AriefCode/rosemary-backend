@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\DetailOrderan;
 use App\Models\Orderan;
-use App\Models\Sayur;
 use App\Services\ProcessOrderService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -35,8 +34,7 @@ class OrderanController extends Controller
             'tanggal_orderan' => 'required|date',
             'items' => 'required|array|min:1',
             'items.*.sayur_id' => 'required|exists:sayur,id',
-            'items.*.jumlah' => 'required|integer|min:1',
-            'items.*.satuan' => 'required|string|max:50',
+            'items.*.jumlah' => 'required|numeric|min:0.01',
         ]);
 
         $orderan = DB::transaction(function () use ($data, $request) {
@@ -44,7 +42,7 @@ class OrderanController extends Controller
                 'restoran_id' => $data['restoran_id'],
                 'karyawan_id' => $request->user()->id,
                 'tanggal_orderan' => $data['tanggal_orderan'],
-                'status' => 'draft',
+                'status' => 'pending',
             ]);
 
             foreach ($data['items'] as $item) {
@@ -52,7 +50,6 @@ class OrderanController extends Controller
                     'orderan_id' => $orderan->id,
                     'sayur_id' => $item['sayur_id'],
                     'jumlah' => $item['jumlah'],
-                    'satuan' => $item['satuan'],
                 ]);
             }
 
@@ -70,17 +67,6 @@ class OrderanController extends Controller
         return response()->json(
             $orderan->load(['restoran', 'karyawan', 'detailOrderan.sayur'])
         );
-    }
-
-    public function proses(Orderan $orderan)
-    {
-        if ($orderan->status !== 'draft') {
-            return response()->json(['message' => 'Hanya orderan draft yang dapat diproses.'], 422);
-        }
-
-        $orderan->update(['status' => 'diproses']);
-
-        return response()->json($orderan->fresh(['restoran', 'karyawan', 'detailOrderan.sayur']));
     }
 
     public function selesai(Orderan $orderan)

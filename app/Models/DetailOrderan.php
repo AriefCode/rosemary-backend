@@ -13,11 +13,10 @@ class DetailOrderan extends Model
         'orderan_id',
         'sayur_id',
         'jumlah',
-        'satuan',
     ];
 
     protected $casts = [
-        'jumlah' => 'integer',
+        'jumlah' => 'decimal:2',
     ];
 
     public function orderan(): BelongsTo

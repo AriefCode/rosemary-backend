@@ -2,31 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\StockNotification;
-use Illuminate\Http\Request;
+use App\Models\Sayur;
 
 class NotificationController extends Controller
 {
     public function index()
     {
-        $notifications = StockNotification::with('sayur')
-            ->orderByDesc('created_at')
-            ->get();
+        $notifications = Sayur::whereColumn('jumlah_persediaan', '<', 'batas_minimum')
+            ->orWhere('jumlah_persediaan', '<=', 0)
+            ->orderBy('jumlah_persediaan')
+            ->get()
+            ->map(fn(Sayur $sayur) => [
+                'sayur_id' => $sayur->id,
+                'nama' => $sayur->nama,
+                'satuan' => $sayur->satuan,
+                'jumlah_persediaan' => $sayur->jumlah_persediaan,
+                'batas_minimum' => $sayur->batas_minimum,
+                'status_persediaan' => $sayur->status_persediaan,
+            ]);
 
         return response()->json($notifications);
-    }
-
-    public function markAsRead(StockNotification $notification)
-    {
-        $notification->update(['read_at' => now()]);
-
-        return response()->json($notification->fresh('sayur'));
-    }
-
-    public function markAllAsRead()
-    {
-        StockNotification::whereNull('read_at')->update(['read_at' => now()]);
-
-        return response()->json(['message' => 'Semua notifikasi ditandai dibaca.']);
     }
 }

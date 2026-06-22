@@ -12,15 +12,15 @@ class DashboardController extends Controller
         $sayur = Sayur::orderByDesc('updated_at')->get();
 
         $total = $sayur->count();
-        $aman = $sayur->where('status', 'aman')->count();
-        $rendah = $sayur->where('status', 'rendah')->count();
-        $habis = $sayur->where('status', 'habis')->count();
+        $aman = $sayur->where('status_persediaan', 'aman')->count();
+        $menipis = $sayur->where('status_persediaan', 'menipis')->count();
+        $habis = $sayur->where('status_persediaan', 'habis')->count();
 
         return response()->json([
             'stats' => [
                 'total' => $total,
                 'aman' => $aman,
-                'rendah' => $rendah,
+                'menipis' => $menipis,
                 'habis' => $habis,
             ],
             'recent_sayur' => $sayur->take(10)->values(),

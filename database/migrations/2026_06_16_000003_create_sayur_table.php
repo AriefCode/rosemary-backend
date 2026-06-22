@@ -11,8 +11,10 @@ return new class extends Migration {
             $table->id();
             $table->string('nama');
             $table->string('satuan');
-            $table->unsignedInteger('jumlah_persediaan')->default(0);
-            $table->unsignedInteger('batas_minimum')->default(5);
+            $table->decimal('jumlah_persediaan', 10, 2)->default(0);
+            $table->date('tanggal_masuk')->nullable();
+            $table->unsignedInteger('estimasi_ketahanan')->nullable();
+            $table->decimal('batas_minimum', 10, 2)->default(0);
             $table->timestamps();
         });
     }

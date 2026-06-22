@@ -27,12 +27,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/orderan', [OrderanController::class, 'index']);
     Route::post('/orderan', [OrderanController::class, 'store']);
     Route::get('/orderan/{orderan}', [OrderanController::class, 'show']);
-    Route::patch('/orderan/{orderan}/proses', [OrderanController::class, 'proses']);
     Route::patch('/orderan/{orderan}/selesai', [OrderanController::class, 'selesai']);
 
     Route::get('/daftar-belanja', [DaftarBelanjaController::class, 'index']);
 
     Route::get('/notifications', [NotificationController::class, 'index']);
-    Route::patch('/notifications/{notification}/read', [NotificationController::class, 'markAsRead']);
-    Route::patch('/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
 });

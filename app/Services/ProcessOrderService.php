@@ -9,10 +9,6 @@ use InvalidArgumentException;
 
 class ProcessOrderService
 {
-    public function __construct(
-        private StockNotificationService $notificationService
-    ) {}
-
     public function selesai(Orderan $orderan): Orderan
     {
         if ($orderan->status === 'selesai') {
@@ -33,8 +29,6 @@ class ProcessOrderService
 
                 $sayur->jumlah_persediaan -= $detail->jumlah;
                 $sayur->save();
-
-                $this->notificationService->checkAndNotify($sayur->fresh());
             }
 
             $orderan->update(['status' => 'selesai']);

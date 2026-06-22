@@ -10,9 +10,9 @@ return new class extends Migration {
         Schema::create('orderan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('restoran_id')->constrained('restoran')->cascadeOnDelete();
-            $table->foreignId('karyawan_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('karyawan_id')->constrained('user')->cascadeOnDelete();
             $table->date('tanggal_orderan');
-            $table->enum('status', ['draft', 'diproses', 'selesai'])->default('draft');
+            $table->enum('status', ['pending', 'selesai'])->default('pending');
             $table->timestamps();
         });
     }

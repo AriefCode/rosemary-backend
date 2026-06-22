@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DetailOrderan;
 use App\Models\Orderan;
 use App\Models\Sayur;
 use Illuminate\Http\Request;
@@ -29,7 +28,7 @@ class DaftarBelanjaController extends Controller
         }
 
         $orderanPending = Orderan::with('detailOrderan.sayur')
-            ->whereIn('status', ['draft', 'diproses'])
+            ->where('status', 'pending')
             ->get();
 
         foreach ($orderanPending as $orderan) {
@@ -41,10 +40,10 @@ class DaftarBelanjaController extends Controller
                     $items[] = [
                         'sayur_id' => $sayur->id,
                         'nama' => $sayur->nama,
-                        'satuan' => $detail->satuan,
+                        'satuan' => $sayur->satuan,
                         'stok_saat_ini' => $sayur->jumlah_persediaan,
                         'jumlah_dibutuhkan' => $kekurangan,
-                        'alasan' => "Orderan #{$orderan->id} ({$orderan->status})",
+                        'alasan' => "Orderan #{$orderan->id} (pending)",
                     ];
                 }
             }
