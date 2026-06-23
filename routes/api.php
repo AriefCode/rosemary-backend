@@ -27,6 +27,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/orderan', [OrderanController::class, 'index']);
     Route::post('/orderan', [OrderanController::class, 'store']);
     Route::get('/orderan/{orderan}', [OrderanController::class, 'show']);
+    Route::put('/orderan/{orderan}', [OrderanController::class, 'update']);
+    Route::patch('/orderan/{orderan}', [OrderanController::class, 'update']);
+    Route::delete('/orderan/{orderan}', [OrderanController::class, 'destroy']);
     Route::patch('/orderan/{orderan}/selesai', [OrderanController::class, 'selesai']);
 
     Route::get('/daftar-belanja', [DaftarBelanjaController::class, 'index']);
