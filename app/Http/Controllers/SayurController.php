@@ -3,14 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sayur;
-use App\Services\StockNotificationService;
 use Illuminate\Http\Request;
 
 class SayurController extends Controller
 {
-    public function __construct(
-        private StockNotificationService $notificationService
-    ) {}
 
     public function index()
     {
@@ -27,7 +23,6 @@ class SayurController extends Controller
         ]);
 
         $sayur = Sayur::create($data);
-        $this->notificationService->checkAndNotify($sayur);
 
         return response()->json($sayur, 201);
     }
@@ -47,7 +42,6 @@ class SayurController extends Controller
         ]);
 
         $sayur->update($data);
-        $this->notificationService->checkAndNotify($sayur->fresh());
 
         return response()->json($sayur->fresh());
     }
